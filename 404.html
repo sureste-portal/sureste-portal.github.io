@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d1b1e">
+<title>Portal Operarios · Sureste</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+font-family:"Segoe UI",Roboto,Arial,sans-serif;color:#fff;text-align:center;padding:24px;box-sizing:border-box;
+background:radial-gradient(120% 80% at 100% 0%,#0b4a55 0%,transparent 60%),#0d1b1e}
+img{width:220px;max-width:70vw;margin-bottom:28px}
+.rueda{width:46px;height:46px;border-radius:50%;border:5px solid #ffffff22;border-top-color:#00a3b5;animation:g 1s linear infinite;margin:0 auto 18px}
+@keyframes g{to{transform:rotate(360deg)}}
+p{color:#b9cdd1;font-size:16px;max-width:340px;line-height:1.45}
+a{color:#00c4d6;font-weight:700}
+.err{display:none}
+</style></head><body>
+<img src="/logo.png" alt="Sureste Construcciones" onerror="this.style.display='none'">
+<div id="ok"><div class="rueda"></div><p>Conectando con el portal…</p></div>
+<div id="err" class="err"><p>⚠️ El portal no está disponible en este momento.<br>Probá de nuevo en unos minutos o avisá en la oficina.</p><p><a href="" onclick="location.reload();return false">Reintentar</a></p></div>
+<script>
+const U="sureste-portal", R=U+"/"+U+".github.io";
+function ir(t){t=(t||"").trim(); if(t.startsWith("https://")){var p=location.pathname; if(p=="/index.html"||p=="/404.html")p="/"; location.replace(t.replace(/\/$/,"")+p+location.search);return true} return false}
+function error(){document.getElementById("ok").style.display="none";document.getElementById("err").style.display="block"}
+fetch("https://api.github.com/repos/"+R+"/contents/destino.txt?t="+Date.now(),{cache:"no-store",headers:{Accept:"application/vnd.github.raw"}})
+ .then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!ir(t))error()})
+ .catch(()=>fetch("https://raw.githubusercontent.com/"+R+"/main/destino.txt?t="+Date.now(),{cache:"no-store"})
+   .then(r=>r.ok?r.text():Promise.reject()).then(t=>{if(!ir(t))error()}).catch(error));
+</script></body></html>
